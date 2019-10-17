@@ -9,7 +9,7 @@ import (
 	"strings"
 	"sync"
 
-	"github.com/mb-14/gomarkov"
+	"github.com/asciifaceman/regomarkov"
 )
 
 const (
@@ -42,12 +42,12 @@ func main() {
 	}
 }
 
-func buildModel() (*gomarkov.Chain, error) {
+func buildModel() (*regomarkov.Chain, error) {
 	stories, err := fetchHNTopStories()
 	if err != nil {
 		return nil, err
 	}
-	chain := gomarkov.NewChain(1)
+	chain := regomarkov.NewChain(1)
 	var wg sync.WaitGroup
 	wg.Add(len(stories))
 	fmt.Println("Adding HN story titles to markov chain...")
@@ -66,8 +66,8 @@ func buildModel() (*gomarkov.Chain, error) {
 	return chain, nil
 }
 
-func loadModel() (*gomarkov.Chain, error) {
-	var chain gomarkov.Chain
+func loadModel() (*regomarkov.Chain, error) {
+	var chain regomarkov.Chain
 	data, err := ioutil.ReadFile("model.json")
 	if err != nil {
 		return &chain, err
@@ -110,7 +110,7 @@ func fetchHNStory(storyID int) (hnStory, error) {
 	return story, err
 }
 
-func saveModel(chain *gomarkov.Chain) {
+func saveModel(chain *regomarkov.Chain) {
 	jsonObj, _ := json.Marshal(chain)
 	err := ioutil.WriteFile("model.json", jsonObj, 0644)
 	if err != nil {
@@ -118,9 +118,9 @@ func saveModel(chain *gomarkov.Chain) {
 	}
 }
 
-func generateHNStory(chain *gomarkov.Chain) {
-	tokens := []string{gomarkov.StartToken}
-	for tokens[len(tokens)-1] != gomarkov.EndToken {
+func generateHNStory(chain *regomarkov.Chain) {
+	tokens := []string{regomarkov.StartToken}
+	for tokens[len(tokens)-1] != regomarkov.EndToken {
 		next, _ := chain.Generate(tokens[(len(tokens) - 1):])
 		tokens = append(tokens, next)
 	}

@@ -10,16 +10,16 @@ import (
 	"os"
 	"strings"
 
-	"github.com/mb-14/gomarkov"
+	"github.com/asciifaceman/regomarkov"
 	"github.com/montanaflynn/stats"
 )
 
 const minimumProbability = 0.05
 
 type model struct {
-	Mean   float64         `json:"mean"`
-	StdDev float64         `json:"std_dev"`
-	Chain  *gomarkov.Chain `json:"chain"`
+	Mean   float64           `json:"mean"`
+	StdDev float64           `json:"std_dev"`
+	Chain  *regomarkov.Chain `json:"chain"`
 }
 
 func main() {
@@ -40,7 +40,7 @@ func main() {
 			return
 		}
 		score := sequenceProbablity(model.Chain, *username)
-		normalizedScore := (score -  model.Mean) / model.StdDev
+		normalizedScore := (score - model.Mean) / model.StdDev
 		isGibberish := normalizedScore < 0
 		fmt.Printf("Score: %f | Gibberish: %t\n", normalizedScore, isGibberish)
 	}
@@ -77,15 +77,15 @@ func loadModel() (model, error) {
 	return m, nil
 }
 
-func buildChain() *gomarkov.Chain {
-	chain := gomarkov.NewChain(2)
+func buildChain() *regomarkov.Chain {
+	chain := regomarkov.NewChain(2)
 	for _, data := range getDataset("usernames.txt") {
 		chain.Add(split(data))
 	}
 	return chain
 }
 
-func getScores(chain *gomarkov.Chain) []float64 {
+func getScores(chain *regomarkov.Chain) []float64 {
 	scores := make([]float64, 0)
 	for _, data := range getDataset("train.txt") {
 		score := sequenceProbablity(chain, data)
@@ -108,10 +108,10 @@ func split(str string) []string {
 	return strings.Split(str, "")
 }
 
-func sequenceProbablity(chain *gomarkov.Chain, input string) float64 {
+func sequenceProbablity(chain *regomarkov.Chain, input string) float64 {
 	tokens := split(input)
 	logProb := float64(0)
-	pairs := gomarkov.MakePairs(tokens, chain.Order)
+	pairs := regomarkov.MakePairs(tokens, chain.Order)
 	for _, pair := range pairs {
 		prob, _ := chain.TransitionProbability(pair.NextState, pair.CurrentState)
 		if prob > 0 {

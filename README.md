@@ -1,4 +1,4 @@
-# gomarkov
+# REgomarkov
 [![GoDoc](https://godoc.org/https://github.com/asciifaceman/regomarkov?status.svg)](https://godoc.org/https://github.com/asciifaceman/regomarkov)
 
 Go implementation of markov chains for textual data.

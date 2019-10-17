@@ -9,7 +9,7 @@ import (
 	"os"
 	"strings"
 
-	"github.com/mb-14/gomarkov"
+	"github.com/mb-14/regomarkov"
 )
 
 func main() {
@@ -29,8 +29,8 @@ func main() {
 	}
 }
 
-func buildModel(order int) *gomarkov.Chain {
-	chain := gomarkov.NewChain(order)
+func buildModel(order int) *regomarkov.Chain {
+	chain := regomarkov.NewChain(order)
 	for _, data := range getDataset("names.txt") {
 		chain.Add(split(data))
 	}
@@ -51,8 +51,8 @@ func getDataset(fileName string) []string {
 	return list
 }
 
-func loadModel() (*gomarkov.Chain, error) {
-	var chain gomarkov.Chain
+func loadModel() (*regomarkov.Chain, error) {
+	var chain regomarkov.Chain
 	data, err := ioutil.ReadFile("model.json")
 	if err != nil {
 		return &chain, err
@@ -64,7 +64,7 @@ func loadModel() (*gomarkov.Chain, error) {
 	return &chain, nil
 }
 
-func saveModel(chain *gomarkov.Chain) {
+func saveModel(chain *regomarkov.Chain) {
 	jsonObj, _ := json.Marshal(chain)
 	err := ioutil.WriteFile("model.json", jsonObj, 0644)
 	if err != nil {
@@ -72,13 +72,13 @@ func saveModel(chain *gomarkov.Chain) {
 	}
 }
 
-func generatePokemon(chain *gomarkov.Chain) {
+func generatePokemon(chain *regomarkov.Chain) {
 	order := chain.Order
 	tokens := make([]string, 0)
 	for i := 0; i < order; i++ {
-		tokens = append(tokens, gomarkov.StartToken)
+		tokens = append(tokens, regomarkov.StartToken)
 	}
-	for tokens[len(tokens)-1] != gomarkov.EndToken {
+	for tokens[len(tokens)-1] != regomarkov.EndToken {
 		next, _ := chain.Generate(tokens[(len(tokens) - order):])
 		tokens = append(tokens, next)
 	}
