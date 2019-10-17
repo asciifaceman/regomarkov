@@ -1,4 +1,4 @@
-package gomarkov
+package regomarkov
 
 import "strings"
 
