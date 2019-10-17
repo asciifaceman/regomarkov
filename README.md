@@ -6,7 +6,7 @@ Go implementation of markov chains for textual data.
 You can find out more about markov chains [here](http://setosa.io/ev/markov-chains/) and [here](https://towardsdatascience.com/introduction-to-markov-chains-50da3645a50d)
 
 # Notice
-This is a rehost of [https://github.com/mb-14/gomarkova](https://github.com/mb-14/gomarkova) which was not receiving PR merges or updates. This version contains some PRs from the original project, modifications, and is updated to be `go mod` compatible.
+This is a rehost of [https://github.com/mb-14/gomarkov](https://github.com/mb-14/gomarkov) which was not receiving PR merges or updates. This version contains some PRs from the original project, modifications, and is updated to be `go mod` compatible.
 
 ## Installation
 
